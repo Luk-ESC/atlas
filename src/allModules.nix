@@ -19,5 +19,6 @@ in
     ./modules/firefox/hm.nix
     ./modules/podman/hm.nix
     ./modules/maltego/hm.nix
+    ./modules/vesktop/hm.nix
   ];
 }
