@@ -29,10 +29,11 @@
           imports = [
             impermanence.nixosModules.impermanence
             ./src/persist/persist.nix
+            ./src/allSystemModules.nix
           ];
 
           home-manager.sharedModules = [
-            ./src/allModules.nix
+            ./src/allHMModules.nix
           ];
 
         };
