@@ -17,5 +17,6 @@ in
   ]
   ++ builtins.map wrap [
     ./modules/waydroid/system.nix
+    ./modules/bluetooth/system.nix
   ];
 }
