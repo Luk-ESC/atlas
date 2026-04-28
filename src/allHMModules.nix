@@ -25,5 +25,6 @@ in
     ./modules/cargo/hm.nix
     ./modules/python/hm.nix
     ./modules/rstudio/hm.nix
+    ./modules/packettracer/hm.nix
   ];
 }
