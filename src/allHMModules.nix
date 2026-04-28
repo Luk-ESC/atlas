@@ -21,5 +21,6 @@ in
     ./modules/maltego/hm.nix
     ./modules/vesktop/hm.nix
     ./modules/codex/hm.nix
+    ./modules/steam/hm.nix
   ];
 }
