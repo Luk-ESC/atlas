@@ -26,5 +26,6 @@ in
     ./modules/python/hm.nix
     ./modules/rstudio/hm.nix
     ./modules/packettracer/hm.nix
+    ./modules/mysql-workbench/hm.nix
   ];
 }
