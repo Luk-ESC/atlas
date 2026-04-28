@@ -24,5 +24,6 @@ in
     ./modules/steam/hm.nix
     ./modules/cargo/hm.nix
     ./modules/python/hm.nix
+    ./modules/rstudio/hm.nix
   ];
 }
