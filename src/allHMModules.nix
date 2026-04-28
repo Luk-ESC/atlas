@@ -20,5 +20,6 @@ in
     ./modules/podman/hm.nix
     ./modules/maltego/hm.nix
     ./modules/vesktop/hm.nix
+    ./modules/codex/hm.nix
   ];
 }
