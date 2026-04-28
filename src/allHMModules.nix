@@ -22,5 +22,6 @@ in
     ./modules/vesktop/hm.nix
     ./modules/codex/hm.nix
     ./modules/steam/hm.nix
+    ./modules/cargo/hm.nix
   ];
 }
