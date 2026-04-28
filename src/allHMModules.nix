@@ -23,5 +23,6 @@ in
     ./modules/codex/hm.nix
     ./modules/steam/hm.nix
     ./modules/cargo/hm.nix
+    ./modules/python/hm.nix
   ];
 }
