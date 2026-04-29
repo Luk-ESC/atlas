@@ -1,6 +1,7 @@
-{ ... }:
+{ pkgs, config, ... }:
 {
   name = "steam";
+  autoEnable = builtins.elem pkgs.steam config.home.packages;
   cfg.persist = {
     logs.contents = [
       ".local/share/Steam/logs/"
