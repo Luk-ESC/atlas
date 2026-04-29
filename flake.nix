@@ -25,16 +25,16 @@
     {
       nixosModules.default =
         { ... }:
+        let
+          allModules = import ./src/allModules.nix;
+        in
         {
           imports = [
             impermanence.nixosModules.impermanence
-            ./src/persist/persist.nix
-            ./src/allSystemModules.nix
-          ];
+          ]
+          ++ allModules "system" ./src/persist/persist.nix;
 
-          home-manager.sharedModules = [
-            ./src/allHMModules.nix
-          ];
+          home-manager.sharedModules = allModules "hm" ./src/persist/home.nix;
 
         };
     };
