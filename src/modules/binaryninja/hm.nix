@@ -1,7 +1,7 @@
-{ pkgs, config, ... }:
+{ pkgExists, ... }:
 {
   name = "binaryninja";
-  autoEnable = builtins.elem pkgs.binaryninja-free config.home.packages;
+  autoEnable = pkgExists "binaryninja-free";
   cfg.persist = {
     data.contents = [
       ".config/Vector 35/Binary Ninja.conf"

@@ -1,6 +1,6 @@
-{ pkgs, config, ... }:
-{
-  name = "geogebra6";
-  autoEnable = builtins.elem pkgs.geogebra6 config.home.packages;
+{ pkgExists, ... }:
+rec {
+  name = "geogebra";
+  autoEnable = pkgExists name;
   cfg.persist.session.contents = [ ".config/GeoGebra/" ];
 }

@@ -1,11 +1,11 @@
-{ pkgs, config, ... }:
+{ pkgs, pkgExists, ... }:
 let
   base = ".maltego/";
   versionPath = "${base}v${pkgs.maltego.version}";
 in
-{
+rec {
   name = "maltego";
-  autoEnable = builtins.elem pkgs.maltego config.home.packages;
+  autoEnable = pkgExists name;
   cfg.persist = {
     logs.contents = [ "${versionPath}/var/log/" ];
     caches.contents = [ "${versionPath}/var/cache/" ];

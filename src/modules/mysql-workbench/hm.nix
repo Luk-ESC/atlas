@@ -1,7 +1,7 @@
-{ pkgs, config, ... }:
-{
+{ pkgExists, ... }:
+rec {
   name = "mysql-workbench";
-  autoEnable = builtins.elem pkgs.mysql-workbench config.home.packages;
+  autoEnable = pkgExists name;
   cfg.persist = {
     session.contents = [ ".mysql/workbench/" ];
     logs.contents = [ ".mysql/workbench/log/" ];

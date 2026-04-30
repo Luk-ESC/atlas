@@ -1,6 +1,6 @@
-{ pkgs, config, ... }:
-{
+{ pkgExists, ... }:
+rec {
   name = "bun";
-  autoEnable = builtins.elem pkgs.bun config.home.packages;
+  autoEnable = pkgExists name;
   cfg.persist.caches.contents = [ ".bun/install/cache/" ];
 }

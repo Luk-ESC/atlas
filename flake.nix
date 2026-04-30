@@ -32,9 +32,9 @@
           imports = [
             impermanence.nixosModules.impermanence
           ]
-          ++ allModules "system" ./src/persist/persist.nix;
+          ++ allModules "system" ./src/persist/persist.nix (x: x.environment.systemPackages);
 
-          home-manager.sharedModules = allModules "hm" ./src/persist/home.nix;
+          home-manager.sharedModules = allModules "hm" ./src/persist/home.nix (x: x.home.packages);
 
         };
     };

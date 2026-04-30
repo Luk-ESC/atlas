@@ -1,4 +1,4 @@
-name: additional:
+name: additional: allPkgs:
 let
   mkMod = import ./mkMod.nix;
   moduleDirs = builtins.attrNames (builtins.readDir ./modules);
@@ -9,6 +9,7 @@ let
     in
     if builtins.pathExists pth then [ pth ] else [ ]
   ) moduleDirs;
+  pkgExists = cfg: name: builtins.any (p: if p ? pname then p.pname == name else false) (allPkgs cfg);
   wrap =
     path:
     args@{
@@ -17,7 +18,7 @@ let
       pkgs,
       ...
     }:
-    (mkMod args) (import path args);
+    (mkMod args) (import path (args // { pkgExists = pkgExists config; }));
 
 in
 [ additional ] ++ builtins.map wrap modulePaths

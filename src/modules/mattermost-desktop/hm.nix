@@ -1,6 +1,6 @@
-{ pkgs, config, ... }:
-{
+{ pkgExists, ... }:
+rec {
   name = "mattermost-desktop";
-  autoEnable = builtins.elem pkgs.mattermost-desktop config.home.packages;
+  autoEnable = pkgExists name;
   cfg.persist.session.contents = [ ".config/Mattermost/" ];
 }

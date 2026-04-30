@@ -1,6 +1,6 @@
-{ pkgs, config, ... }:
-{
+{ pkgExists, ... }:
+rec {
   name = "teams-for-linux";
-  autoEnable = builtins.elem pkgs.teams-for-linux config.home.packages;
+  autoEnable = pkgExists name;
   cfg.persist.session.contents = [ ".config/teams-for-linux/" ];
 }
