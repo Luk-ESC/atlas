@@ -74,9 +74,21 @@ rec {
     f: g: c:
     builtins.filter f (builtins.filter g c);
 
-  transformFile = map (e: {
-    file = e.file;
-  });
+  transformFile = map (
+    e:
+    {
+      file = e.file;
+    }
+    // (lib.optionalAttrs (e.mode != null) {
+      parentDirectory.mode = e.mode;
+    })
+    // (lib.optionalAttrs (e.user != null) {
+      parentDirectory.user = e.user;
+    })
+    // (lib.optionalAttrs (e.group != null) {
+      parentDirectory.group = e.group;
+    })
+  );
 
   transformDir = map (
     e:
