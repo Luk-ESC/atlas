@@ -21,4 +21,8 @@ let
     (mkMod args) (import path (args // { pkgExists = pkgExists config; }));
 
 in
-[ additional ] ++ builtins.map wrap modulePaths
+[
+  ./extraPaths.nix
+  additional
+]
+++ builtins.map wrap modulePaths
