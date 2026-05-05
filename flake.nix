@@ -16,12 +16,7 @@
   };
 
   outputs =
-    {
-      self,
-      impermanence,
-      nixpkgs,
-      home-manager,
-    }:
+    { impermanence, ... }:
     {
       nixosModules.default =
         { ... }:
