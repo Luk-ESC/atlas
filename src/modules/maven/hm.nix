@@ -1,5 +1,6 @@
-{ ... }:
-{
+{ pkgExists, ... }:
+rec {
   name = "maven";
-  cfg.persist.caches.contents = [ ".m2/repository/" ];
+  autoEnable = pkgExists name;
+  cfg.persist.caches.contents = [ ".m2/" ];
 }
