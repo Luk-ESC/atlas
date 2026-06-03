@@ -5,5 +5,5 @@
 {
   name = "firefox";
   autoEnable = config.programs.firefox.enable;
-  cfg.persist.session.contents = [ ".mozilla/" ];
+  cfg.persist.session.contents = [ ".config/mozilla/" ];
 }

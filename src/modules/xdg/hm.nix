@@ -8,6 +8,7 @@ let
     "publicShare"
     "templates"
     "videos"
+    "projects"
   ];
   absolutePaths = builtins.filter (x: x != null) (map (x: config.xdg.userDirs.${x}) dirs);
   relPaths = map (lib.removePrefix "${config.home.homeDirectory}/") absolutePaths;
