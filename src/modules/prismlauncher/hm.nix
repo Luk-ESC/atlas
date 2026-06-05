@@ -1,7 +1,7 @@
-{ pkgExists, ... }:
+{ config, ... }:
 rec {
   name = "prismlauncher";
-  autoEnable = pkgExists name;
+  autoEnable = config.programs.prismlauncher.enable;
   cfg.persist = {
     data.contents = [
       ".local/share/PrismLauncher/"
