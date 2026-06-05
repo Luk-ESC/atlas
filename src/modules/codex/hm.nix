@@ -1,9 +1,11 @@
-{ ... }:
+{ lib, config, ... }:
+let
+  # TODO: realPath?
+  p = config.persist.session.prefix + "session" + config.xdg.configHome + "/codex";
+in
 {
   name = "codex";
-  cfg.persist = {
-    session.contents = [ ".codex/" ];
-    caches.contents = [ ".codex/cache/" ];
-    logs.contents = [ ".codex/log/" ];
-  };
+  autoEnable = config.programs.codex.enable;
+  cfg.home.sessionVariables.CODEX_HOME = lib.mkForce p;
+  cfg.atlas.extraPaths = [ p ];
 }
