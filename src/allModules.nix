@@ -1,14 +1,8 @@
-name: additional: allPkgs: locs: basePath:
+name: allPkgs: locs: basePath:
 let
   mkMod = import ./mkMod.nix;
   moduleDirs = builtins.attrNames (builtins.readDir ./modules);
-  modulePaths = builtins.concatMap (
-    dir:
-    let
-      pth = ./modules + "/${dir}/${name}.nix";
-    in
-    if builtins.pathExists pth then [ pth ] else [ ]
-  ) moduleDirs;
+  modulePaths = builtins.filter builtins.pathExists (map (x: ./modules/${x}/${name}.nix) moduleDirs);
   pkgExists = cfg: name: builtins.any (p: p ? pname && p.pname == name) (allPkgs cfg);
   realPath =
     cfg: loc: p:
@@ -34,6 +28,6 @@ let
 in
 [
   ./extraPaths.nix
-  additional
+  ./persist/${name}.nix
 ]
-++ builtins.map wrap modulePaths
+++ map wrap modulePaths

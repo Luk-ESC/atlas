@@ -22,13 +22,9 @@
         { ... }:
         let
           allModules = import ./src/allModules.nix;
-          sysMods = allModules "system" ./src/persist/persist.nix (x: x.environment.systemPackages) (
-            x: x.persist.locations
-          ) (_: "/");
 
-          hmMods = allModules "hm" ./src/persist/home.nix (x: x.home.packages) (x: x.persist) (
-            x: x.home.homeDirectory + "/"
-          );
+          sysMods = allModules "system" (x: x.environment.systemPackages) (x: x.persist.locations) (_: "/");
+          hmMods = allModules "hm" (x: x.home.packages) (x: x.persist) (x: x.home.homeDirectory + "/");
         in
         {
           imports = [ impermanence.nixosModules.impermanence ] ++ sysMods;
