@@ -1,7 +1,11 @@
-{ lib, config, ... }:
+{
+  lib,
+  config,
+  realPath,
+  ...
+}:
 let
-  # TODO: realPath?
-  p = config.persist.session.prefix + "session" + config.xdg.configHome + "/codex";
+  p = realPath "session" ".config/codex";
 in
 {
   name = "codex";

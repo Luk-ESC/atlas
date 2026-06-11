@@ -1,7 +1,6 @@
-{ config, pkgExists, ... }:
+{ pkgExists, realPath, ... }:
 let
-  # TODO: realPath?
-  goPath = config.persist.caches.prefix + "caches" + config.home.homeDirectory + "/go/";
+  goPath = realPath "caches" "go/";
 in
 rec {
   name = "go";

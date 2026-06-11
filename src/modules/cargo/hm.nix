@@ -1,7 +1,6 @@
-{ config, ... }:
+{ config, realPath, ... }:
 let
-  # TODO: realPath?
-  cargoHome = config.persist.data.prefix + "caches" + config.home.homeDirectory + "/.cargo";
+  cargoHome = realPath "caches" ".cargo";
 in
 {
   name = "cargo";

@@ -1,8 +1,7 @@
-{ config, ... }:
+{ config, realPath, ... }:
 let
-  # TODO: realPath?
-  histPath = config.persist.data.prefix + "data" + config.home.homeDirectory + "/.zsh_history";
-  cachePath = config.persist.caches.prefix + "caches" + config.home.homeDirectory + "/.zcompdump";
+  histPath = realPath "data" ".zsh_history";
+  cachePath = realPath "caches" ".zcompdump";
 in
 {
   name = "zsh";

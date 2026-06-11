@@ -1,7 +1,6 @@
-{ config, pkgExists, ... }:
+{ realPath, pkgExists, ... }:
 let
-  # TODO: realPath?
-  histPath = config.persist.data.prefix + "data" + config.home.homeDirectory + "/.python_history";
+  histPath = realPath "data" ".python_history";
 in
 {
   name = "python";
