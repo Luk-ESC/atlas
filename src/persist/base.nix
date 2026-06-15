@@ -17,16 +17,12 @@ rec {
               coercedTo str
                 (
                   s:
-                  if isDirectory s then
+                  if lib.hasSuffix "/" s then
                     {
-                      directory = stripTrailing s;
-                      file = null;
+                      directory = lib.removeSuffix "/" s;
                     }
                   else
-                    {
-                      file = s;
-                      directory = null;
-                    }
+                    { file = s; }
                 )
                 (submodule {
                   options = {
@@ -64,52 +60,40 @@ rec {
     };
 
   getPath = p: if p.directory != null then p.directory else p.file;
-  isDirectory =
-    p: if builtins.isString p then lib.hasSuffix "/" p else (p ? directory && p.directory != null);
+  isDirectory = p: p.directory != null;
   isSystem = p: lib.hasPrefix "/" (getPath p);
 
-  not = f: a: !(f a);
-  stripTrailing = p: lib.substring 0 (builtins.stringLength p - 1) p;
-  filter2 =
-    f: g: c:
-    builtins.filter f (builtins.filter g c);
+  entrySettings =
+    e:
+    lib.filterAttrs (_: v: v != null) {
+      inherit (e) mode user group;
+    };
 
-  transformFile = map (
+  transformFile =
+    e:
+    let
+      s = entrySettings e;
+    in
+    {
+      inherit (e) file;
+    }
+    // lib.optionalAttrs (s != { }) { parentDirectory = s; };
+
+  transformDir =
     e:
     {
-      file = e.file;
+      inherit (e) directory;
     }
-    // (lib.optionalAttrs (e.mode != null) {
-      parentDirectory.mode = e.mode;
-    })
-    // (lib.optionalAttrs (e.user != null) {
-      parentDirectory.user = e.user;
-    })
-    // (lib.optionalAttrs (e.group != null) {
-      parentDirectory.group = e.group;
-    })
-  );
+    // (entrySettings e);
 
-  transformDir = map (
-    e:
-
-    {
-      directory = e.directory;
-    }
-    // (lib.optionalAttrs (e.mode != null) { mode = e.mode; })
-    // (lib.optionalAttrs (e.user != null) { user = e.user; })
-    // (lib.optionalAttrs (e.group != null) { group = e.group; })
-  );
-
-  parseUserDirectories = paths: transformDir (filter2 (not isSystem) isDirectory paths);
-  parseUserFiles = paths: transformFile (filter2 (not isSystem) (not isDirectory) paths);
-
-  parseSystemDirectories = paths: transformDir (filter2 isSystem isDirectory paths);
-  parseSystemFiles = paths: transformFile (filter2 isSystem (not isDirectory) paths);
+  transformItem = dir: if dir then transformDir else transformFile;
+  filterItems = system: dir: builtins.filter (x: (isSystem x) == system && (isDirectory x) == dir);
+  parseFull =
+    paths: system: dir:
+    map (transformItem dir) (filterItems system dir paths);
 
   dirsAndFiles = system: contents: {
-    directories = (if system then parseSystemDirectories else parseUserDirectories) contents;
-    files = (if system then parseSystemFiles else parseUserFiles) contents;
+    directories = parseFull contents system true;
+    files = parseFull contents system false;
   };
-
 }

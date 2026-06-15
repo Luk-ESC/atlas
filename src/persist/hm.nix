@@ -4,20 +4,14 @@
   pkgs,
   ...
 }:
-with lib;
 let
   loc = config.persist;
-  base = (pkgs.callPackage ./base.nix { });
+  base = pkgs.callPackage ./base.nix { };
 in
 {
   options.persist = base.persistentOption;
 
-  config.home.persistence = builtins.listToAttrs (
-    map (
-      name: with loc.${name}; {
-        name = prefix + name;
-        value = base.dirsAndFiles false contents;
-      }
-    ) (builtins.attrNames loc)
-  );
+  config.home.persistence = lib.concatMapAttrs (name: v: {
+    ${v.prefix + name} = base.dirsAndFiles false v.contents;
+  }) loc;
 }

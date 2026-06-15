@@ -4,57 +4,38 @@
   pkgs,
   ...
 }:
-with lib;
 let
   cfg = config.persist;
   loc = cfg.location;
-  base = (pkgs.callPackage ./base.nix { });
+  base = pkgs.callPackage ./base.nix { };
 in
 {
-  options.persist = with types; {
-    users = mkOption {
+  options.persist = with lib.types; {
+    users = lib.mkOption {
       description = "users to persist";
       default = [ ];
-      type = listOf types.str;
+      type = listOf str;
     };
+
     location = base.persistentOption;
   };
 
-  inherit
-    (
-      let
-        fileSystems = builtins.listToAttrs (
-          map (
-            name: with loc.${name}; {
-              name = prefix + name;
-              value.neededForBoot = true;
-            }
-          ) (builtins.attrNames loc)
-        );
-      in
-      {
-        config.fileSystems = fileSystems;
-        config.virtualisation.vmVariantWithDisko.virtualisation.fileSystems = fileSystems;
+  config =
+    let
+      fileSystems = lib.concatMapAttrs (name: v: {
+        ${v.prefix + name}.neededForBoot = true;
+      }) loc;
+    in
+    {
+      inherit fileSystems;
+      virtualisation.vmVariantWithDisko.virtualisation.fileSystems = fileSystems;
 
-        config.environment.persistence = builtins.listToAttrs (
-          map (
-            name: with loc.${name}; {
-              name = prefix + name;
-              value = base.dirsAndFiles true contents // {
-                hideMounts = true;
+      environment.persistence = lib.concatMapAttrs (name: v: {
+        ${v.prefix + name} = base.dirsAndFiles true v.contents // {
+          hideMounts = true;
 
-                users = builtins.listToAttrs (
-                  map (name: {
-                    name = name;
-                    value = base.dirsAndFiles false contents;
-                  }) cfg.users
-                );
-              };
-            }
-          ) (builtins.attrNames loc)
-        );
-      }
-    )
-    config
-    ;
+          users = lib.genAttrs cfg.users (_: base.dirsAndFiles false v.contents);
+        };
+      }) loc;
+    };
 }
