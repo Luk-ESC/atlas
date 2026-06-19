@@ -1,4 +1,7 @@
-{ pkgExists, ... }:
+{ realPath, pkgExists, ... }:
+let
+  prefix = realPath "session" ".wine";
+in
 {
   name = "wine";
   autoEnable = builtins.any pkgExists [
@@ -7,5 +10,6 @@
     "wine64"
     "wine-wow64"
   ];
-  cfg.persist.session.contents = [ ".wine/" ];
+  cfg.home.sessionVariables.WINEPREFIX = prefix;
+  cfg.atlas.extraPaths = [ prefix ];
 }
