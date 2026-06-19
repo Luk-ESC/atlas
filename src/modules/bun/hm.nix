@@ -1,6 +1,6 @@
-{ pkgExists, ... }:
-rec {
+{ config, ... }:
+{
   name = "bun";
-  autoEnable = pkgExists name;
+  autoEnable = config.programs.bun.enable;
   cfg.persist.caches.contents = [ ".bun/install/cache/" ];
 }
