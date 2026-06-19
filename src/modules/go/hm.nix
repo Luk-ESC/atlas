@@ -1,10 +1,10 @@
-{ pkgExists, realPath, ... }:
+{ config, realPath, ... }:
 let
   goPath = realPath "caches" "go/";
 in
-rec {
+{
   name = "go";
-  autoEnable = pkgExists name;
-  cfg.home.sessionVariables.GOPATH = goPath;
+  autoEnable = config.programs.go.enable;
+  cfg.programs.go.env.GOPATH = goPath;
   cfg.atlas.extraPaths = [ goPath ];
 }
