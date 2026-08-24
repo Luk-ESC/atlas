@@ -13,7 +13,7 @@ in
   options.persist = with lib.types; {
     users = lib.mkOption {
       description = "users to persist";
-      default = [ ];
+      default = builtins.attrNames config.home-manager.users;
       type = listOf str;
     };
 
